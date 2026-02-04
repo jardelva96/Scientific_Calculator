@@ -162,11 +162,24 @@ class CalculadoraCientifica:
     def calcular(self):
         try:
             expressao = self.entrada.get()
-            resultado = eval(expressao, {"__builtins__": None}, 
-                           {"sin": sin, "cos": cos, "tan": tan, 
-                            "asin": asin, "acos": acos, "atan": atan,
-                            "log": log, "sqrt": sqrt, "pi": pi, "e": e, 
-                            "factorial": factorial, "abs": abs})
+            
+            # Namespace seguro e restrito para cálculos
+            safe_dict = {
+                "__builtins__": {},  # Remove built-ins completamente
+                "sin": sin, "cos": cos, "tan": tan, 
+                "asin": asin, "acos": acos, "atan": atan,
+                "log": log, "sqrt": sqrt, "pi": pi, "e": e, 
+                "factorial": factorial, "abs": abs,
+                "pow": pow, "round": round
+            }
+            
+            # Validação básica da expressão
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            if any(palavra in expressao.lower() for palavra in caracteres_proibidos):
+                messagebox.showerror("Erro", "Expressão contém elementos proibidos!")
+                return
+            
+            resultado = eval(expressao, {"__builtins__": {}}, safe_dict)
             
             # Adicionar ao histórico
             self.historico.append(f"{expressao} = {resultado}")
@@ -184,6 +197,12 @@ class CalculadoraCientifica:
         try:
             expressao = self.entrada.get()
             
+            # Validação de segurança
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            if any(palavra in expressao.lower() for palavra in caracteres_proibidos):
+                messagebox.showerror("Erro", "Expressão contém elementos proibidos!")
+                return
+            
             # Criar nova janela para o gráfico
             janela_grafico = tk.Toplevel(self.janela)
             janela_grafico.title("Gráfico 2D")
@@ -193,11 +212,16 @@ class CalculadoraCientifica:
             fig, ax = plt.subplots(figsize=(10, 6))
             x = np.linspace(-10, 10, 1000)
             
+            # Namespace seguro para avaliação
+            safe_dict = {
+                "__builtins__": {},
+                "x": x, "sin": np.sin, "cos": np.cos, "tan": np.tan,
+                "log": np.log, "sqrt": np.sqrt, "pi": np.pi, "e": np.e,
+                "exp": np.exp, "abs": np.abs, "np": np
+            }
+            
             # Avaliar a função
-            y = eval(expressao, {"__builtins__": None}, 
-                    {"x": x, "sin": np.sin, "cos": np.cos, "tan": np.tan,
-                     "log": np.log, "sqrt": np.sqrt, "pi": np.pi, "e": np.e,
-                     "exp": np.exp, "abs": np.abs, "np": np})
+            y = eval(expressao, {"__builtins__": {}}, safe_dict)
             
             ax.plot(x, y, linewidth=2.5, color='#3498db')
             ax.set_title(f'Gráfico: y = {expressao}', fontsize=16, fontweight='bold')
@@ -218,6 +242,12 @@ class CalculadoraCientifica:
         try:
             expressao = self.entrada.get()
             
+            # Validação de segurança
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            if any(palavra in expressao.lower() for palavra in caracteres_proibidos):
+                messagebox.showerror("Erro", "Expressão contém elementos proibidos!")
+                return
+            
             # Criar nova janela para o gráfico
             janela_grafico = tk.Toplevel(self.janela)
             janela_grafico.title("Gráfico 3D")
@@ -231,11 +261,16 @@ class CalculadoraCientifica:
             y = np.linspace(-10, 10, 100)
             X, Y = np.meshgrid(x, y)
             
+            # Namespace seguro para avaliação
+            safe_dict = {
+                "__builtins__": {},
+                "x": X, "y": Y, "np": np, "sin": np.sin, "cos": np.cos,
+                "tan": np.tan, "sqrt": np.sqrt, "exp": np.exp,
+                "log": np.log, "pi": np.pi, "e": np.e, "abs": np.abs
+            }
+            
             # Avaliar a função
-            Z = eval(expressao, {"__builtins__": None},
-                    {"x": X, "y": Y, "np": np, "sin": np.sin, "cos": np.cos,
-                     "tan": np.tan, "sqrt": np.sqrt, "exp": np.exp,
-                     "log": np.log, "pi": np.pi, "e": np.e})
+            Z = eval(expressao, {"__builtins__": {}}, safe_dict)
             
             surf = ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.8)
             ax.set_xlabel('X', fontsize=12)

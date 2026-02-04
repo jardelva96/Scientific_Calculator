@@ -80,9 +80,22 @@ def main():
             print("- Seno: np.sin(x)")
             print("- Exponencial: np.exp(x)")
             expressao = input("Digite a expressão da função em termos de x: ")
+            
+            # Validação de segurança
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            if any(palavra in expressao.lower() for palavra in caracteres_proibidos):
+                print("\n✗ Erro: Expressão contém elementos proibidos!")
+                continue
+            
             try:
-                funcao = lambda x: eval(expressao, {"__builtins__": None}, 
-                                       {"x": x, "np": np})
+                safe_dict = {
+                    "__builtins__": {},
+                    "np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan,
+                    "sqrt": np.sqrt, "exp": np.exp, "log": np.log,
+                    "pi": np.pi, "e": np.e, "abs": np.abs
+                }
+                funcao = lambda x: eval(expressao, {"__builtins__": {}}, 
+                                       {**safe_dict, "x": x})
                 plotar_funcao(funcao, titulo=f"y = {expressao}")
             except Exception as e:
                 print(f"\n✗ Erro ao plotar: {e}")
@@ -93,12 +106,26 @@ def main():
             funcoes = []
             labels = []
             
+            # Validação de segurança
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            safe_dict = {
+                "__builtins__": {},
+                "np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan,
+                "sqrt": np.sqrt, "exp": np.exp, "log": np.log,
+                "pi": np.pi, "e": np.e, "abs": np.abs
+            }
+            
             for i in range(num_funcoes):
                 expr = input(f"Digite a expressão da função {i+1}: ")
+                
+                if any(palavra in expr.lower() for palavra in caracteres_proibidos):
+                    print(f"\n✗ Erro na função {i+1}: Expressão contém elementos proibidos!")
+                    continue
+                
                 label = input(f"Digite o rótulo da função {i+1}: ")
                 try:
-                    funcao = lambda x, e=expr: eval(e, {"__builtins__": None}, 
-                                                    {"x": x, "np": np})
+                    funcao = lambda x, e=expr: eval(e, {"__builtins__": {}}, 
+                                                    {**safe_dict, "x": x})
                     funcoes.append(funcao)
                     labels.append(label)
                 except Exception as e:
@@ -124,9 +151,22 @@ def main():
             print("- Espiral: theta")
             print("- Cardioide: 1 + np.cos(theta)")
             expressao = input("Digite a expressão r = f(theta): ")
+            
+            # Validação de segurança
+            caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+            if any(palavra in expressao.lower() for palavra in caracteres_proibidos):
+                print("\n✗ Erro: Expressão contém elementos proibidos!")
+                continue
+            
             try:
-                funcao = lambda theta: eval(expressao, {"__builtins__": None},
-                                           {"theta": theta, "np": np})
+                safe_dict = {
+                    "__builtins__": {},
+                    "np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan,
+                    "sqrt": np.sqrt, "exp": np.exp, "log": np.log,
+                    "pi": np.pi, "e": np.e, "abs": np.abs
+                }
+                funcao = lambda theta: eval(expressao, {"__builtins__": {}},
+                                           {**safe_dict, "theta": theta})
                 plotar_grafico_polar(funcao)
             except Exception as e:
                 print(f"\n✗ Erro ao plotar: {e}")

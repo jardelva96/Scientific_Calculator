@@ -7,6 +7,18 @@
 
 Uma calculadora científica completa desenvolvida em Python com interface gráfica moderna e capacidades avançadas de visualização de gráficos.
 
+## ⚠️ Nota de Segurança
+
+**IMPORTANTE**: Esta calculadora usa `eval()` para avaliar expressões matemáticas, o que pode representar riscos de segurança se usado com entrada não confiável. 
+
+**Recomendações**:
+- Use apenas para fins educacionais e pessoais
+- Não exponha esta aplicação diretamente na internet sem proteções adequadas
+- Digite apenas expressões matemáticas válidas
+- Não execute código de fontes não confiáveis
+
+Para uso em produção, considere usar bibliotecas de parsing mais seguras como `sympy.sympify()` ou `ast.literal_eval()` com parsers customizados.
+
 ## ✨ Características
 
 ### 🔢 Operações Matemáticas

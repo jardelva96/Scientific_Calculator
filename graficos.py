@@ -70,7 +70,22 @@ def plotar_funcao_3d(funcao_str, intervalo=(-10, 10)):
     X, Y = np.meshgrid(x, y)
     
     try:
-        Z = eval(funcao_str, {"x": X, "y": Y, "np": np})
+        # Validação de segurança básica
+        caracteres_proibidos = ['import', 'exec', 'eval', '__', 'open', 'file', 'input', 'compile']
+        if any(palavra in funcao_str.lower() for palavra in caracteres_proibidos):
+            print("Erro: Expressão contém elementos proibidos!")
+            return
+        
+        # Namespace seguro
+        safe_dict = {
+            "__builtins__": {},
+            "x": X, "y": Y, "np": np,
+            "sin": np.sin, "cos": np.cos, "tan": np.tan,
+            "sqrt": np.sqrt, "exp": np.exp, "log": np.log,
+            "pi": np.pi, "e": np.e, "abs": np.abs
+        }
+        
+        Z = eval(funcao_str, {"__builtins__": {}}, safe_dict)
         surf = ax.plot_surface(X, Y, Z, cmap='viridis', alpha=0.8)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
