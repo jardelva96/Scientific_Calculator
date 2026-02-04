@@ -180,16 +180,25 @@ Scientific_Calculator/
 ## 🎨 Screenshots
 
 ### Interface Principal
+![Calculator Interface](screenshots/calculator_interface.png)
+
 A interface gráfica apresenta:
 - Display grande e legível
 - Botões coloridos por categoria
 - Layout responsivo e moderno
 - Suporte para funções científicas complexas
 
-### Exemplos de Gráficos
+### Exemplos de Gráficos 2D
+![2D Graphs](screenshots/sample_graphs_2d.png)
+
 - **Gráficos 2D**: Funções senoidais, exponenciais, polinomiais
+- Oscilação amortecida e outras funções complexas
+
+### Exemplos de Gráficos 3D
+![3D Graphs](screenshots/sample_graphs_3d.png)
+
 - **Gráficos 3D**: Superfícies, paraboloides, selas
-- **Gráficos Polares**: Rosas, espirais, cardioides
+- Ondas e padrões tridimensionais complexos
 
 ## 🤝 Contribuindo
 
